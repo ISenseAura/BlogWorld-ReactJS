@@ -7,6 +7,14 @@ import Login from './components/Login';
 import SignUp from './components/SignUp';
 import AddPost from './components/Post';
 import BlogView from './components/BlogView';
+import Topic from './components/Topic';
+import TopicView from './components/TopicView';
+import TopicPost from './components/TopicPost';
+
+
+import AddTopic from './components/AddTopic';
+
+
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LoadingBar from 'react-top-loading-bar'
@@ -87,8 +95,15 @@ const App = () => {
             <Route exact path="/signup"><SignUp /></Route>
 
             <Route exact path="/create"><AddPost /></Route>
+            <Route exact path="/topic/add"><AddTopic /></Route>
+            <Route exact path="/topics/:tag"><Topic /></Route>
+
+
 
             <Route path="/article/:tag" children={<BlogView />} />
+            <Route path="/topic/:cat/:tag" children={<TopicView />} />
+            <Route path="/topicpost/create/:cat/:tag" children={<TopicPost />} />
+
           </Switch>
         </div>
 

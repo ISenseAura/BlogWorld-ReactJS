@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 
 var  serverAdd = process.env.REACT_APP_SERVER;
 
-const AddPost = (props) => {
+const AddTopic= (props) => {
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -14,8 +14,8 @@ const AddPost = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch(
-      serverAdd + "/api/auth/signup",
-      {
+        serverAdd + "/api/auth/signup",
+        {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,13 +39,12 @@ const AddPost = (props) => {
   };
 
   const [note, setNote] = useState({
-    postid: "",
-    title: "",
-    ldescription: "",
-    img: "",
-    sdescriotion: "",
-    topic : "none",
-    cat : "none"
+    topicid: "",
+    name: "",
+    description: "",
+    category : "",
+    img : "",
+    color : ""
   });
   
   
@@ -69,7 +68,7 @@ const AddPost = (props) => {
     }
 
     const response = await fetch(
-      `${serverAdd}/api/posts/create`,
+      `${serverAdd}/api/topics/create`,
       {
         method: "POST",
         headers: {
@@ -77,13 +76,14 @@ const AddPost = (props) => {
           "auth-token": localStorage.getItem("token"), //`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiemVyYXBpdW0iLCJ1c2VybmFtZSI6IlplcmFwaXVtIiwiZW1haWwiOiJtbW1AbW0uY29tIn0sImlhdCI6MTYzODUyNDM0Nn0.eWm0y_ULVu57suXg7BhHwS1XKisqLd0ZQDMYCp7UPXo`
         },
         body: JSON.stringify({
-          postid: note.postid && note.postid.length ? note.postid.trim() : false,
-          title: note.title,
-          text: note.ldescription,
-          img: note.img,
-          short: note.sdescription && note.sdescription.length ? note.sdescription : false,
-          topic : note.topic ? note.topic : false,
-          cat : note.cat != "none" ? note.cat : false
+          topicid: note.topicid && note.topicid.length ? note.topicid.trim() : false,
+          name: note.name,
+          description: note.description,
+          category : note.category,
+          img: note.img && note.img.length ? note.img.trim() : false,
+          color : note.color && note.color.length ? note.color : false
+
+         
         }),
       }
     );
@@ -103,22 +103,22 @@ const AddPost = (props) => {
 
   return (
     <div className="container my-3 p-5 bg-dark text-light">
-      <h2 className="text-light">Add a Blog</h2>
+      <h2 className="text-light">Add a Topic</h2>
       <form className="my-3" onSubmit={addNote}>
         <div className="mb-3">
-          <label htmlFor="postid" className="form-label">
-            Post ID (Optional)
+          <label htmlFor="topicid" className="form-label">
+            Topic ID (Optional)
           </label>
           <small>
-            <i> (Enter post id if you wanna add to existing blog) </i>{" "}
+            <i> (Enter topic id if you wanna edit a topic) </i>{" "}
           </small>
 
           <input
             type="text"
             className="form-control"
-            id="postid"
-            name="postid"
-            value={note.postid}
+            id="topicid"
+            name="topicid"
+            value={note.topicid}
             onChange={onChange}
             minLength={5}
             required
@@ -130,20 +130,37 @@ const AddPost = (props) => {
 
         <div className="mb-3">
           <label htmlFor="title" className="form-label">
-            Title
+            Topic Name
           </label>
           <input
             type="text"
             className="form-control"
-            id="title"
-            name="title"
+            id="name"
+            name="name"
             aria-describedby="emailHelp"
-            value={note.title}
+            value={note.name}
             onChange={onChange}
             minLength={5}
             required
           />
         </div>
+        <div className="mb-3">
+          <label htmlFor="title" className="form-label">
+            Category
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="category"
+            name="category"
+            aria-describedby="emailHelp"
+            value={note.category}
+            onChange={onChange}
+            minLength={5}
+            required
+          />
+        </div>
+
         <div className="mb-3">
           <label htmlFor="description" className="form-label">
             Short Description
@@ -151,29 +168,15 @@ const AddPost = (props) => {
           <input
             type="text"
             className="form-control"
-            id="sdescription"
-            name="sdescription"
-            value={note.sdescription}
+            id="description"
+            name="description"
+            value={note.description}
             onChange={onChange}
             minLength={5}
-            required
+            
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="description" className="form-label">
-            Long Description
-          </label>
-          <textarea
-            type="text"
-            className="form-control"
-            id="ldescription"
-            name="ldescription"
-            value={note.ldescription}
-            onChange={onChange}
-            minLength={5}
-            required
-          />
-        </div>
+       
         <div className="mb-3">
           <label htmlFor="tag" className="form-label">
             Image Link
@@ -186,36 +189,30 @@ const AddPost = (props) => {
             value={note.img}
             onChange={onChange}
             minLength={5}
-            required
-          />
-
-<input
-            type="text"
-            className="form-control"
-            id="topic"
-            name="topic"
-            value={note.topic}
-            onChange={onChange}
             
-            minLength={5}
-            required
-          />
-
-<input
-            type="text"
-            className="form-control"
-            id="cat"
-            name="cat"
-            value={note.cat}
-            onChange={onChange}
-            
-            minLength={5}
-            required
           />
         </div>
 
+
+        <div className="mb-3">
+          <label htmlFor="tag" className="form-label">
+           Color
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="color"
+            name="color"
+            value={note.color}
+            onChange={onChange}
+            minLength={3}
+            
+          />
+        </div>
+
+
         <button type="submit" className="btn btn-primary" onClick={addNote}>
-          Add Post
+          Add Topic
         </button>
       </form>
     </div>
@@ -224,4 +221,4 @@ const AddPost = (props) => {
 
 
 
-export default AddPost;
+export default AddTopic;

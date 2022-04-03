@@ -35,7 +35,7 @@ const SignUp = (props) => {
 
         }
         else{
-             alertMD("Dude!","Invalid credentials");
+             alertMD("Dude!",json.authtoken);
         }
     }
 

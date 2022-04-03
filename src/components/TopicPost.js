@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 var  serverAdd = process.env.REACT_APP_SERVER;
 
-const AddPost = (props) => {
+const TopicPost = (props) => {
+    let { cat,tag } = useParams();
+
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -44,8 +47,8 @@ const AddPost = (props) => {
     ldescription: "",
     img: "",
     sdescriotion: "",
-    topic : "none",
-    cat : "none"
+    topic : tag,
+    cat : cat
   });
   
   
@@ -91,7 +94,7 @@ const AddPost = (props) => {
     const json = await response.json();
     console.log(json);
     if (json.success) {
-      history.push("/");
+      history.push("/topic/" + cat + "/" + tag);
     } else {
            alertMD("Dude!",json.errors[0].msg);
     }
@@ -188,7 +191,27 @@ const AddPost = (props) => {
             minLength={5}
             required
           />
+          </div>
+          <div className="mb-3">
+          <label htmlFor="tag" className="form-label">
+Category          </label>
+<input
+            type="text"
+            className="form-control"
+            id="cat"
+            name="cat"
+            value={note.cat}
+            onChange={onChange}
+            
+            minLength={5}
+            readOnly
+            required
+          />
+</div>
 
+<div className="mb-3">
+          <label htmlFor="tag" className="form-label">
+Topic          </label>
 <input
             type="text"
             className="form-control"
@@ -199,18 +222,7 @@ const AddPost = (props) => {
             
             minLength={5}
             required
-          />
-
-<input
-            type="text"
-            className="form-control"
-            id="cat"
-            name="cat"
-            value={note.cat}
-            onChange={onChange}
-            
-            minLength={5}
-            required
+            readOnly
           />
         </div>
 
@@ -224,4 +236,4 @@ const AddPost = (props) => {
 
 
 
-export default AddPost;
+export default TopicPost;

@@ -1,18 +1,20 @@
-import React, { useState} from 'react'
+import React, { useState,useEffect} from 'react'
 import { Link } from "react-router-dom";
 import { useHistory } from 'react-router-dom'
 
-
-
 let sdb = "";
- 
+
+
+var  serverAdd = process.env.REACT_APP_SERVER;
 
 
 
 
 
-const NavBar = () => {
-  let history = useHistory();
+
+const NavBar =  () => {
+  
+
   
     function alertMD(title,bodyy) {
     let bt = document.getElementById("modal");
@@ -21,14 +23,41 @@ const NavBar = () => {
     bt.click();
 
   }
+  const [cats, setCats] = useState([])
+
+
   
   const ff = () => {
   
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    history.push("/login");
     
   }
+
+  const docats = async () => {
+    
+    const response = await fetch(
+      serverAdd + "/api/topics/cats",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const json = await response.json();
+return json;      
+}
+
+  
+  useEffect(() => {
+    docats().then((po) => {
+      setCats(po.topics);
+    });
+
+    // eslint-disable-next-line
+  }, [])
+
 
   const [sdb, setSDB] = useState("");
   
@@ -81,17 +110,18 @@ const NavBar = () => {
                
 	          </li>
             <li className="active">
-              <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Pages</a>
+              <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Categories</a>
               <ul className="collapse list-unstyled" id="pageSubmenu">
-                <li>
-                    <a href="#">Page 1</a>
-                </li>
-                <li>
-                    <a href="#">Page 2</a>
-                </li>
-                <li>
-                    <a href="#">Page 3</a>
-                </li>
+               {
+               
+               cats.map((ele) => {
+                 return <li>
+                 <a href={"/topics/" + ele}>{ele.replace(ele.charAt(0),ele.charAt(0).toUpperCase())}</a>
+             </li>
+               })}
+               <li>
+                 <a href={"/topic/add"} >Add Category</a>
+             </li>
               </ul>
 	          </li>
             <li className="active">
