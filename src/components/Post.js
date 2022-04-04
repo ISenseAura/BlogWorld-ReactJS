@@ -57,6 +57,8 @@ const AddPost = (props) => {
 
   }
 
+
+
   const addNote = async (e) => {
     // TODO: API Call
     // API Call
@@ -98,9 +100,11 @@ const AddPost = (props) => {
   };
 
   const onChange = (e) => {
+    console.log("test")
     setNote({ ...note, [e.target.name]: e.target.value });
   };
 
+ 
   return (
     <div className="container my-3 p-5 bg-dark text-light">
       <h2 className="text-light">Add a Blog</h2>
@@ -165,12 +169,14 @@ const AddPost = (props) => {
           </label>
           <textarea
             type="text"
-            className="form-control"
+            className="form-control h-25"
             id="ldescription"
             name="ldescription"
             value={note.ldescription}
             onChange={onChange}
             minLength={5}
+            rows={50}
+            style={{minHeight:"200px"}}
             required
           />
         </div>
@@ -188,7 +194,27 @@ const AddPost = (props) => {
             minLength={5}
             required
           />
+</div>
+<div className="mb-3">
+          <label htmlFor="tag" className="form-label">
+Category          </label>
+<input
+            type="text"
+            className="form-control"
+            id="cat"
+            name="cat"
+            value={note.cat}
+            onChange={onChange}
+            
+            minLength={5}
+            readOnly
+            required
+          />
+</div>
 
+<div className="mb-3">
+          <label htmlFor="tag" className="form-label">
+Topic          </label>
 <input
             type="text"
             className="form-control"
@@ -199,20 +225,11 @@ const AddPost = (props) => {
             
             minLength={5}
             required
-          />
-
-<input
-            type="text"
-            className="form-control"
-            id="cat"
-            name="cat"
-            value={note.cat}
-            onChange={onChange}
-            
-            minLength={5}
-            required
+            readOnly
           />
         </div>
+
+      
 
         <button type="submit" className="btn btn-primary" onClick={addNote}>
           Add Post

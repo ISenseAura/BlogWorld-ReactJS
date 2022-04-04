@@ -168,12 +168,14 @@ const TopicPost = (props) => {
           </label>
           <textarea
             type="text"
-            className="form-control"
+            className="form-control h-25"
             id="ldescription"
             name="ldescription"
             value={note.ldescription}
             onChange={onChange}
             minLength={5}
+            rows={50}
+            style={{minHeight:"200px"}}
             required
           />
         </div>
