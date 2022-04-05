@@ -3,6 +3,8 @@ import React, { useEffect } from 'react'
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import  parse  from 'html-react-parser';
+
 
 var  serverAdd = process.env.REACT_APP_SERVER;
 
@@ -20,15 +22,11 @@ const BlogView = (props) => {
  
  }
 
- function unescapeHTML (htmlStr) {
-htmlStr = escape(htmlStr);
-htmlStr = htmlStr.replace(/&lt;br&gt;/g , "<br>");	 
-htmlStr = htmlStr.replace(/&lt;b&gt;/g , "<b>");
-htmlStr = htmlStr.replace(/&lt;\/b&gt;/g , "</b>");   
-htmlStr = htmlStr.replace(/&amp;/g , "&");
-    return htmlStr;
+ function unescapeHTML(str) {
+  if (!str) return '';
+  return ('' + str).replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&#x2f;/g, '/').replace(/&#39;/g, "'").replace(/&#34;/g, '"');
+}
 
- }
 
 
   function modifyDate(date, timeReq) {
@@ -166,6 +164,7 @@ htmlStr = htmlStr.replace(/&amp;/g , "&");
     // eslint-disable-next-line
   }, [])
 
+  let l = ["i","b","br","h2","div"]
 
 
   return (
@@ -204,7 +203,14 @@ htmlStr = htmlStr.replace(/&amp;/g , "&");
                 alt="Avatar"
               />
 
-              <p className="pggg" dangerouslySetInnerHTML = {{__html :escapeHTML(post.text)}} ></p>
+              <span className="pggg" >{parse(post.text, 
+  function(d){
+    if (!l.includes(d.name)) {
+    
+      return;
+    }
+  })
+}</span>
               <br></br>
               <br></br>
 
@@ -234,12 +240,19 @@ return <div id={ele.id}> <h3>{ele.title}
                 alt="Avatar"
               />
 
-              <p dangerouslySetInnerHTML = {{__html :unescapeHTML(ele.text)}} ></p>
+              <span>{parse(ele.text, 
+  function(d){
+    if (!l.includes(d.name)) {
+      return;
+    }
+  })
+}</span>
               <br></br>
               <br></br>
               </div>
               })
             }
+
 
 
             </div>
@@ -305,23 +318,12 @@ return <div id={ele.id}> <h3>{ele.title}
 
             <div class="sidebar">
 
-            
+            <h3 class="sidebar-title my-2">Post Actions</h3>
             <button class="btn btn-success mx-1"> Edit </button>
             <button class="btn btn-info"> Extend </button>
             <button class="btn btn-danger mx-1"> Delete </button> 
-
-              <h3 class="sidebar-title my-2">Categories</h3>
-              <div class="sidebar-item categories">
-                <ul>
-                  <li><a href="#">General <span>(25)</span></a></li>
-                  <li><a href="#">Lifestyle <span>(12)</span></a></li>
-                  <li><a href="#">Travel <span>(5)</span></a></li>
-                  <li><a href="#">Design <span>(22)</span></a></li>
-                  <li><a href="#">Creative <span>(8)</span></a></li>
-                  <li><a href="#">Educaion <span>(14)</span></a></li>
-                </ul>
-              </div>
-
+            <script src="%PUBLIC_URL%/js/rainbow.min.js" ></script>
+            
               <h3 class="sidebar-title">Recent Posts</h3>
               <div class="sidebar-item recent-posts">
                 <div class="post-item clearfix">
