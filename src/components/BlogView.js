@@ -147,6 +147,27 @@ const BlogView = (props) => {
     }
   };
 
+  const deletePost = async () => {
+    let c = window.confirm("Do you want to delete the post?");
+    if(!c) return;
+    const response = await fetch(serverAdd + "/api/posts/delete/" + tag, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+              'auth-token' : localStorage.getItem("token")
+            }
+
+        });
+    let json = await response.json()
+    if(json.success) {
+    history.push("/");
+    
+    }
+    else {
+      alert(json.msg)
+    }
+  }
+
   useEffect(() => {
     getPost().then((po) => {
       document.title = `${title} - MyBlogWorld`;
@@ -321,7 +342,7 @@ return <div id={ele.id}> <h3>{ele.title}
             <h3 class="sidebar-title my-2">Post Actions</h3>
             <button class="btn btn-success mx-1"> Edit </button>
             <button class="btn btn-info"> Extend </button>
-            <button class="btn btn-danger mx-1"> Delete </button> 
+            <button class="btn btn-danger mx-1" onClick={deletePost}> Delete </button> 
             <script src="%PUBLIC_URL%/js/rainbow.min.js" ></script>
             
               <h3 class="sidebar-title">Recent Posts</h3>
